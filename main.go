@@ -32,14 +32,15 @@ func main() {
 		}
 	}()
 
-	http.HandleFunc("/", handleRequest)
+	http.HandleFunc("GET /", get)
+	http.HandleFunc("GET /stats", stats)
 
 	port := "8080"
 	log.Printf("Server is running on port %s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
-func handleRequest(w http.ResponseWriter, r *http.Request) {
+func get(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "Not Found")
@@ -59,6 +60,19 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 	response := map[string]string{
 		"url": fmt.Sprintf("%s/%s", awsPublicUrl, fileName),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+}
+
+func stats(w http.ResponseWriter, r *http.Request) {
+	mapMutex.RLock()
+	defer mapMutex.RUnlock()
+
+	response := map[string]int{
+		"file_count": len(fileMap),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
