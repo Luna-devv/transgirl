@@ -16,7 +16,7 @@ To deploy this project, create the following `docker-compose.yml`:
 ```yml
 services:
   app:
-    image: ghcr.io/Luna-devv/mellow-transgirl:latest
+    image: ghcr.io/luna-devv/mellow-transgirl:latest
     container_name: mw-transgirl
     ports:
       - "8080:8080"
