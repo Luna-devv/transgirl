@@ -26,7 +26,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	go func() {
-		err := fetchFileNames()
+		_, err := fetchFileNames()
 		if err != nil {
 			log.Fatalf("Failed to fetch file names: %v", err)
 		}
@@ -34,6 +34,7 @@ func main() {
 
 	http.HandleFunc("GET /", get)
 	http.HandleFunc("GET /stats", stats)
+	http.HandleFunc("POST /refresh", refresh)
 
 	port := "8080"
 	log.Printf("Server is running on port %s\n", port)
@@ -73,6 +74,31 @@ func stats(w http.ResponseWriter, r *http.Request) {
 
 	response := map[string]int{
 		"file_count": len(fileMap),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response)
+}
+
+func refresh(w http.ResponseWriter, r *http.Request) {
+	auth := r.Header.Get("Authorization")
+	if auth != "Bearer "+secretKey {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	mapMutex.Lock()
+	defer mapMutex.Unlock()
+
+	count, err := fetchFileNames()
+	if err != nil {
+		http.Error(w, "Failed to fetch file names", http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]int{
+		"file_count": count,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

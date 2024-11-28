@@ -11,13 +11,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func fetchFileNames() error {
+func fetchFileNames() (int, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
 		config.WithRegion(awsRegion),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to load AWS config: %w", err)
+		return 0, fmt.Errorf("failed to load AWS config: %w", err)
 	}
 
 	ctx := context.TODO()
@@ -37,7 +37,7 @@ func fetchFileNames() error {
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx)
 		if err != nil {
-			return fmt.Errorf("failed to fetch bucket objects: %w", err)
+			return 0, fmt.Errorf("failed to fetch bucket objects: %w", err)
 		}
 
 		for _, object := range page.Contents {
@@ -47,5 +47,5 @@ func fetchFileNames() error {
 	}
 
 	log.Printf("Fetched %d files from bucket %s\n", len(fileMap), awsBucket)
-	return nil
+	return len(fileMap), nil
 }
