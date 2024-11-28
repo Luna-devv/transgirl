@@ -35,11 +35,17 @@ func main() {
 	http.HandleFunc("/", handleRequest)
 
 	port := "8080"
-	fmt.Printf("Server is running on port %s\n", port)
+	log.Printf("Server is running on port %s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "Not Found")
+		return
+	}
+
 	mapMutex.RLock()
 	defer mapMutex.RUnlock()
 
