@@ -45,12 +45,18 @@ curl http://localhost:8080
 {"url":"https://r2.wamellow.com/blahaj/wAuI4n.webp"}
 ```
 
+---
+### Statistics
+
 To see how many files are currently in the cache (any file from the bucket that starts with `FILE_PREFIX`), make a [GET request to the `/stats`](https://transgirl.wamellow.com/stats) endpoint.
 
 ```sh
 curl http://localhost:8080/stats
 {"file_count": 242}
 ```
+
+---
+### Refreshing
 
 To refresh the cache, make a [POST request to the `/refresh`](https://transgirl.wamellow.com/refresh) endpoint.
 As authorization header, you need to provide the `Bearer` token that you set in the `AWS_SECRET_ACCESS_KEY` environment variable.
