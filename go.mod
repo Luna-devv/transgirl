@@ -1,4 +1,4 @@
-module Luna-devv/mellow-transgirl
+module Luna-devv/transgirl
 
 go 1.23.0
 

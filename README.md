@@ -1,12 +1,13 @@
 [![](https://img.shields.io/discord/828676951023550495?color=5865F2&logo=discord&logoColor=white)](https://lunish.nl/support)
-![](https://ghcr-badge.egpl.dev/luna-devv/mellow-transgirl/latest_tag)
-![](https://ghcr-badge.egpl.dev/luna-devv/mellow-transgirl/size)
+![](https://ghcr-badge.egpl.dev/luna-devv/transgirl/latest_tag)
+![](https://ghcr-badge.egpl.dev/luna-devv/transgirl/size)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I6AFVAP)
 
 ## About
-mellow-transgirl allows you to get random files from any AWS S3 compatible storage bucket using a lightweight, scalable go http api. This project is a part of the Wamellow project.
+transgirl allows you to get random files from any AWS S3 compatible storage bucket using a lightweight, scalable go http api.
 
+This project is a part of the Wamellow project for serving random images of Blåhajs for `/blahaj`.
 An example of this project in deployment can be found at [transgirl.wamellow.com](https://transgirl.wamellow.com).
 
 If you need help deploying this api, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
@@ -16,8 +17,8 @@ To deploy this project, create the following `docker-compose.yml`:
 ```yml
 services:
   app:
-    image: ghcr.io/luna-devv/mellow-transgirl:latest
-    container_name: mw-transgirl
+    image: ghcr.io/luna-devv/transgirl:latest
+    container_name: transgirl
     ports:
       - "8080:8080"
     environment:
@@ -66,7 +67,12 @@ curl -X POST http://localhost:8080/refresh \
     -H "Authorization: Bearer <your-secret-access-key>"
 ```
 
-## TypeScript example
+## Examples
+Here are some Copy-Paste examples for using this api in your projects.
+
+### TypeScript
+A simple example of how you can use this api in a TypeScript project.
+
 ```ts
 // blahaj.ts
 export interface BlahajResponse {
@@ -88,7 +94,11 @@ const blahaj = await getBlahaj();
 console.log(blahaj.url);
 ```
 
-## JavaScript discord bot example
+### JavaScript Discord Bot
+To use this snippet, you need to do the following things first:
+1. Install the `discord.js` package using `npm install discord.js`.
+2. Replace `your-token` with your bot token. (https://discord.com/developers/applications)
+
 ```js
 const { Client, GatewayIntent } = require('discord.js');
 
