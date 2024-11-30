@@ -65,3 +65,54 @@ As authorization header, you need to provide the `Bearer` token that you set in 
 curl -X POST http://localhost:8080/refresh \
     -H "Authorization: Bearer <your-secret-access-key>"
 ```
+
+## TypeScript example
+```ts
+// blahaj.ts
+export interface BlahajResponse {
+    url: string;
+}
+
+export async function getBlahaj() {
+    const blahaj = await fetch(this.url)
+        .then((r) => r.json())
+        .catch(() => null) as BlahajResponse | null;
+
+    return blahaj;
+}
+
+// index.ts
+import { getBlahaj } from './blahaj.ts';
+
+const blahaj = await getBlahaj();
+console.log(blahaj.url);
+```
+
+## JavaScript discord bot example
+```js
+const { Client, GatewayIntent } = require('discord.js');
+
+const client = new Client({
+    intents: [
+        GatewayIntent.GuildMessages,
+        GatewayIntent.MessageContent,
+    ]
+});
+
+client.on('messageCreate', async (message) => {
+    if (message.content === '!blahaj') {
+        const blahaj = await fetch('http://localhost:8080')
+            .then((r) => r.json())
+            .catch(() => null);
+
+        if (!blahaj) {
+            message.channel.send({ content: 'Failed to get a random blahaj' });
+            return;
+        }
+
+        message.channel.send({ content: blahaj.url });
+    }
+});
+
+client.login('your-token');
+```
