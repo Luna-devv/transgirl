@@ -88,9 +88,6 @@ func refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	mapMutex.Lock()
-	defer mapMutex.Unlock()
-
 	count, err := fetchFileNames()
 	if err != nil {
 		http.Error(w, "Failed to fetch file names", http.StatusInternalServerError)
