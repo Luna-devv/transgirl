@@ -7,10 +7,10 @@
 ## About
 transgirl allows you to get random files from any AWS S3 compatible storage bucket using a lightweight, scalable go http api.
 
-This project is a part of the Wamellow project for serving random images of Blåhajs for `/blahaj`.
+This project is a part of the [Wamellow](https://wamellow.com) project for serving random images of Blåhajs for `/blahaj`.
 An example of this project in deployment can be found at [transgirl.wamellow.com](https://transgirl.wamellow.com).
 
-If you need help deploying this api, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
+If you need help deploying with this api, join **[our Discord Server](https://discord.com/invite/yYd6YKHQZH)**.
 
 ## Deploy
 To deploy this project, create the following `docker-compose.yml`:
@@ -70,11 +70,12 @@ curl -X POST http://localhost:8080/refresh \
 ## Examples
 Here are some Copy-Paste examples for using this api in your projects.
 
+---
 ### TypeScript
 A simple example of how you can use this api in a TypeScript project.
 
+`blahaj.ts`
 ```ts
-// blahaj.ts
 export interface BlahajResponse {
     url: string;
 }
@@ -86,18 +87,24 @@ export async function getBlahaj() {
 
     return blahaj;
 }
-
-// index.ts
+```
+`index.ts`
+```ts
 import { getBlahaj } from './blahaj.ts';
 
 const blahaj = await getBlahaj();
+if (!blahaj) process.exit();
+
 console.log(blahaj.url);
 ```
 
+---
 ### JavaScript Discord Bot
 To use this snippet, you need to do the following things first:
 1. Install the `discord.js` package using `npm install discord.js`.
 2. Replace `your-token` with your bot token. (https://discord.com/developers/applications)
+3. Run `node .`
+4. Invite the bot to your server and run `!blahaj`.
 
 ```js
 const { Client, GatewayIntent } = require('discord.js');
@@ -126,3 +133,10 @@ client.on('messageCreate', async (message) => {
 
 client.login('your-token');
 ```
+
+## Used in
+This API is used for:
+- [Wamellow Daily Posts](https://wamellow.com/docs/dailyposts) - Discord Bot to get daily Blåhajs.
+- [Wamellow](https://wamellow.com/invite) - Discord Bot to get random Blåhajs by using `/blahaj`.
+- [blahaj.4k.pics](https://blahaj.4k.pics) - Web view for this API.
+- [@blahaj.4k.pics](https://bsky.app/profile/blahaj.4k.pics) - Daily curated Blåhajs on Bluesky.
