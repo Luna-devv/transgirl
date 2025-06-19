@@ -11,6 +11,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
+var MEGA_BYTE int64 = 1000 * 1000;
+var MAX_FILE_SIZE int64 = MEGA_BYTE * 7;
+
 func fetchFileNames() (int, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
@@ -41,6 +44,10 @@ func fetchFileNames() (int, error) {
 		}
 
 		for _, object := range page.Contents {
+			if *object.Size > MAX_FILE_SIZE {
+				continue
+			}
+
 			fileMap[index] = *object.Key
 			index++
 		}
